@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>John the Ripper: The Basics</title>
+
+    <!-- External CSS file (optional) -->
     <link rel="stylesheet" href="../style.css">
+
+    <!-- Internal CSS -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,17 +26,20 @@
         .screenshot {
             width: 100%;
             max-width: 600px;
-            margin: 10px 0;
+            margin: 15px 0;
             border: 1px solid #ddd;
             padding: 5px;
+            display: block;
         }
         pre {
             background: #f4f4f4;
             padding: 10px;
             overflow-x: auto;
+            border-left: 4px solid #333;
         }
     </style>
 </head>
+
 <body>
 
 <h1>John the Ripper: The Basics</h1>
@@ -40,8 +47,8 @@
 
 <p>Learn how to use John the Ripper, a powerful and adaptable hash-cracking tool.</p>
 
-<!-- Screenshot placeholder -->
-<img src="screenshot1.png" alt="Screenshot 1" class="screenshot">
+<!-- First Screenshot -->
+<img src="Screenshot 2025-11-14 175534.png" alt="Screenshot" class="screenshot">
 
 <h2>Task 1: Introduction</h2>
 <p>John the Ripper is a well-known, well-loved, and versatile hash-cracking tool. It combines a fast cracking speed with an extraordinary range of compatible hash types.</p>
@@ -53,13 +60,12 @@
     <li>Public Key Cryptography Basics</li>
     <li>Hashing Basics</li>
 </ul>
-<p>Basic command line abilities are also required.</p>
 
 <h3>Learning Objectives</h3>
 <p>Upon completion, you will learn to use John for:</p>
 <ul>
     <li>Cracking Windows authentication hashes</li>
-    <li>Crack /etc/shadow hashes</li>
+    <li>Cracking /etc/shadow hashes</li>
     <li>Cracking password-protected Zip files</li>
     <li>Cracking password-protected RAR files</li>
     <li>Cracking SSH keys</li>
@@ -68,6 +74,7 @@
 <h2>Task 2: Basic Terms</h2>
 <h3>What are Hashes?</h3>
 <p>A hash converts data of any length into a fixed-length value using a hashing algorithm. This process hides the original data.</p>
+
 <pre>
 "polo" → MD5 hash: b53759f3ce692de7aff1b5779d3964da
 "polomints" → MD5 hash: 584b6e4f4586e136bc280f27f9c64f3b
@@ -79,6 +86,7 @@
     <li>P (Polynomial Time): Problems that can be solved quickly.</li>
     <li>NP (Non-deterministic Polynomial Time): Problems where verifying a solution is easy, but finding it is hard.</li>
 </ul>
+
 <p>Hashing falls under P, while “un-hashing” is NP-hard, making it computationally infeasible.</p>
 
 <h3>Where John Comes In</h3>
@@ -101,12 +109,12 @@
 <h3>Wordlists</h3>
 <p>RockYou is used for this room. Example extraction:</p>
 <pre>tar xvzf rockyou.txt.tar.gz</pre>
-
 <p><strong>Answer:</strong> rockyou.com</p>
 
 <h2>Task 4: Cracking Basic Hashes</h2>
 <p>Basic syntax:</p>
 <pre>john [options] [file path]</pre>
+
 <p>Automatic cracking example:</p>
 <pre>john --wordlist=/usr/share/wordlists/rockyou.txt hash_to_crack.txt</pre>
 
@@ -125,12 +133,12 @@
 <p>Format: NTLM / NTHash, stored in SAM database.</p>
 <p>Use:</p>
 <pre>john --wordlist=/usr/share/wordlists/rockyou.txt --format=NT ntlm.txt</pre>
-
 <p><strong>Answer:</strong> mushroom</p>
 
 <h2>Task 6: Cracking /etc/shadow Hashes</h2>
 <p>Combine passwd and shadow with unshadow:</p>
 <pre>unshadow [path to passwd] [path to shadow] > unshadowed.txt</pre>
+
 <p>Crack:</p>
 <pre>john --wordlist=/usr/share/wordlists/rockyou.txt --format=sha512crypt unshadowed.txt</pre>
 <p><strong>Answer:</strong> 1234</p>
@@ -141,27 +149,34 @@
 
 <h2>Task 8: Custom Rules</h2>
 <p>Custom rules allow you to exploit password complexity predictability.</p>
-<p>Example to add capitals at the end: <code>Az"[A-Z]"</code></p>
+
+<p>Example to add capitals at the end:</p>
+<pre>Az"[A-Z]"</pre>
 
 <p><strong>Answer:</strong> Password complexity predictability, --rule=THMRules</p>
 
 <h2>Task 9: Cracking Password-Protected Zip Files</h2>
-<pre>zip2john secure.zip > zip_hash.txt
-john --wordlist=/usr/share/wordlists/rockyou.txt zip_hash.txt</pre>
+<pre>
+zip2john secure.zip > zip_hash.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt zip_hash.txt
+</pre>
 <p><strong>Answer:</strong> pass123, flag: THM{w3ll_d0n3_h4sh_r0y4l}</p>
 
 <h2>Task 10: Cracking Password-Protected RAR Archives</h2>
-<pre>rar2john secure.rar > rar_hash.txt
-john --wordlist=/usr/share/wordlists/rockyou.txt rar_hash.txt</pre>
+<pre>
+rar2john secure.rar > rar_hash.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt rar_hash.txt
+</pre>
 <p><strong>Answer:</strong> password, flag: THM{r4r_4rch1ve5_th15_t1m3}</p>
 
 <h2>Task 11: Cracking SSH Keys with John</h2>
-<pre>ssh2john id_rsa > id_rsa_hash.txt
-john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_hash.txt</pre>
+<pre>
+ssh2john id_rsa > id_rsa_hash.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_hash.txt
+</pre>
 <p><strong>Answer:</strong> mango</p>
 
 <h2>Task 12: Further Reading</h2>
-<p>Core workflow recap:</p>
 <ul>
     <li>Basic syntax & wordlist attacks</li>
     <li>Auto-detection vs format-specific cracking</li>
@@ -170,8 +185,8 @@ john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_hash.txt</pre>
     <li>Custom rules (--rule)</li>
     <li>Cracking Windows, Linux, archive, and SSH key hashes</li>
 </ul>
+
 <p>Next steps: Build custom rules, practise on lab hashes, explore incremental & hybrid modes.</p>
 
 </body>
 </html>
-
